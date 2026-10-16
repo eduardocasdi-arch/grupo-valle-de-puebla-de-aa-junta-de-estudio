@@ -41,6 +41,9 @@ button,select{font:inherit;color:inherit}
 .subs{flex:1 1 0;min-height:max(30%,150px);background:var(--surface);border:1.5px solid var(--line);border-radius:14px;
   padding:clamp(12px,2vw,28px);display:flex;flex-direction:column;gap:10px;overflow:hidden;position:relative}
 .subs .lbl{display:flex;align-items:center;gap:8px;font-size:.75rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.lbl .sp{flex:1}
+.lbl button{background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:.25rem .7rem;font-size:.68rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+body.clean .lbl button{display:none}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--line)}
 .on .dot{background:var(--live);box-shadow:0 0 0 0 var(--live);animation:pulse 1.4s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
@@ -67,7 +70,7 @@ body.clean #peek{display:block}
 </style><style>body{margin:0}</style>
 
 <div id="app">
-  <div class="brand">Grupo Valle de Puebla de AA · Junta de Estudio · v6</div>
+  <div class="brand">Grupo Valle de Puebla de AA · Junta de Estudio · v7</div>
   <div class="top">
     <select id="sec" class="sel" aria-label="Paso o capítulo"></select>
     <span class="count" id="count">—</span>
@@ -80,7 +83,7 @@ body.clean #peek{display:block}
       <p id="question">—</p>
     </div>
     <div class="subs" id="subs">
-      <div class="lbl"><span class="dot"></span><span id="status">Micrófono apagado</span></div>
+      <div class="lbl"><span class="dot"></span><span id="status">Micrófono apagado</span><span class="sp"></span><button id="clr" type="button">Borrar lectura</button><button id="clrall" type="button">Borrar todo</button></div>
       <div class="txt"><p id="subtxt"><span class="ph">Toca «Micrófono» y lee el párrafo. Lo que digas aparecerá aquí.</span></p></div>
       <div class="msg" id="msg" role="status"></div>
     </div>
@@ -119,6 +122,7 @@ function goSection(i){ si = i; qi = resumeIndex(i); secSel.value = i; render(tru
 
 /* ---------- pregunta en pantalla ---------- */
 function render(clear){
+  const newKey = DATA[si].title + '|' + DATA[si].items[qi].n;
   const s = DATA[si], it = s.items[qi];
   let t = it.t, pend = false;
   const m = t.match(/^\[PENDIENTE[^\]]*\]\s*/);
@@ -134,7 +138,8 @@ function render(clear){
   $('next').disabled = (si===DATA.length-1 && qi===s.items.length-1);
   LS.set('gvp_q_'+s.title, String(qi));
   LS.set('gvp_sec', String(si));
-  if(clear) clearSubs();
+  if(newKey!==curKey){ flushPiece(); curKey = newKey; sessFinal=''; interim=''; skip = lastLen; }
+  paintSubs(); const sc = $('subtxt').parentElement; sc.scrollTop = sc.scrollHeight;
 }
 function step(d){
   const s = DATA[si];
@@ -157,13 +162,23 @@ addEventListener('keydown', e=>{
   else if(e.key===' '){ e.preventDefault(); toggleMic(); }
 });
 
-/* ---------- subtitulos en vivo: nada se graba ni se guarda ---------- */
+/* ---------- subtitulos en vivo: la lectura de cada pregunta se guarda solo en este celular ---------- */
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-let rec = null, wantOn = false, committed = '', sessFinal = '', interim = '', skip = 0, lastLen = 0;
+let rec = null, wantOn = false, sessFinal = '', interim = '', skip = 0, lastLen = 0, curKey = null;
+let reads = {};
+try{ reads = JSON.parse(LS.get('gvp_reads_v1') || '{}') || {}; }catch(e){ reads = {}; }
+function saveReads(){ try{ LS.set('gvp_reads_v1', JSON.stringify(reads)); }catch(e){} }
+function addPiece(key, piece){
+  piece = (piece||'').replace(/\s+/g,' ').trim(); if(!key || !piece) return;
+  const cur = reads[key] || '';
+  if(cur.trim().toLowerCase().endsWith(piece.toLowerCase())) return;
+  reads[key] = (cur + piece + ' ').slice(-6000); saveReads();
+}
+function flushPiece(){ addPiece(curKey, sessFinal + ' ' + interim); }
 
 function paintSubs(){
   const box = $('subtxt'); box.textContent = '';
-  let fin = (committed + sessFinal).trim();
+  let fin = ((reads[curKey]||'') + sessFinal).trim();
   
   if(!fin && !interim.trim()){
     const ph = document.createElement('span'); ph.className='ph';
@@ -175,7 +190,15 @@ function paintSubs(){
   box.appendChild(a); box.appendChild(b);
   if(wantOn){ const sc = box.parentElement; sc.scrollTop = sc.scrollHeight; }
 }
-function clearSubs(){ committed=''; sessFinal=''; interim=''; skip = lastLen; paintSubs(); }
+function resetSession(){ sessFinal=''; interim=''; skip = lastLen; }
+$('clr').addEventListener('click', ()=>{ reads[curKey]=''; saveReads(); resetSession(); paintSubs(); });
+let armed = null;
+$('clrall').addEventListener('click', ()=>{
+  const b = $('clrall');
+  if(!armed){ b.textContent = '¿Seguro? Toca otra vez'; armed = setTimeout(()=>{ armed=null; b.textContent='Borrar todo'; }, 4000); return; }
+  clearTimeout(armed); armed = null; b.textContent = 'Borrar todo';
+  reads = {}; saveReads(); resetSession(); paintSubs();
+});
 function setStatus(on){
   $('subs').classList.toggle('on', on);
   $('status').textContent = on ? 'Escuchando' : 'Micrófono apagado';
@@ -210,9 +233,7 @@ function startRec(){
     else if(e.error==='audio-capture'){ wantOn=false; setStatus(false); say('No se detecta un micrófono.'); }
   };
   rec.onend = ()=>{
-    const piece = (sessFinal + ' ' + interim).replace(/\s+/g,' ').trim();
-    const tail = committed.trim().toLowerCase();
-    if(piece && !tail.endsWith(piece.toLowerCase())) committed = (committed + piece + ' ').slice(-1500);
+    addPiece(curKey, sessFinal + ' ' + interim);
     sessFinal=''; interim=''; skip=0; lastLen=0;
     if(wantOn){ setTimeout(()=>{ if(wantOn){ try{ startRec(); }catch(e){ wantOn=false; setStatus(false); } } }, 120); }
     else { setStatus(false); }
