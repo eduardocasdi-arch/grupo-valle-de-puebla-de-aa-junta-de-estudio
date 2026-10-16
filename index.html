@@ -45,8 +45,8 @@ button,select{font:inherit;color:inherit}
 .on .dot{background:var(--live);box-shadow:0 0 0 0 var(--live);animation:pulse 1.4s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
 @media (prefers-reduced-motion:reduce){.on .dot{animation:none}.bar i{transition:none}}
-.txt{flex:1;display:flex;align-items:flex-end;overflow:hidden}
-.txt p{margin:0;font-size:clamp(1.25rem,calc(.8rem + 1.9vw),2.7rem);line-height:1.35;font-weight:400;overflow-wrap:anywhere}
+.txt{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+.txt p{margin:auto 0 0;font-size:clamp(1.25rem,calc(.8rem + 1.9vw),2.7rem);line-height:1.35;font-weight:400;overflow-wrap:anywhere}
 .txt .int{color:var(--muted)}
 .txt .ph{color:var(--muted);font-size:clamp(1rem,calc(.7rem + 1vw),1.5rem)}
 .brand{flex:0 0 auto;font-size:.72rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center}
@@ -67,7 +67,7 @@ body.clean #peek{display:block}
 </style><style>body{margin:0}</style>
 
 <div id="app">
-  <div class="brand">Grupo Valle de Puebla de AA · Junta de Estudio · v5</div>
+  <div class="brand">Grupo Valle de Puebla de AA · Junta de Estudio · v6</div>
   <div class="top">
     <select id="sec" class="sel" aria-label="Paso o capítulo"></select>
     <span class="count" id="count">—</span>
@@ -164,7 +164,7 @@ let rec = null, wantOn = false, committed = '', sessFinal = '', interim = '', sk
 function paintSubs(){
   const box = $('subtxt'); box.textContent = '';
   let fin = (committed + sessFinal).trim();
-  if(fin.length > 380){ fin = fin.slice(-380); const sp = fin.indexOf(' '); if(sp>0 && sp<40) fin = fin.slice(sp+1); }
+  
   if(!fin && !interim.trim()){
     const ph = document.createElement('span'); ph.className='ph';
     ph.textContent = wantOn ? 'Escuchando… empieza a leer.' : 'Toca «Micrófono» y lee el párrafo. Lo que digas aparecerá aquí.';
@@ -173,6 +173,7 @@ function paintSubs(){
   const a = document.createElement('span'); a.textContent = fin + (fin && interim ? ' ' : '');
   const b = document.createElement('span'); b.className='int'; b.textContent = interim.trim();
   box.appendChild(a); box.appendChild(b);
+  if(wantOn){ const sc = box.parentElement; sc.scrollTop = sc.scrollHeight; }
 }
 function clearSubs(){ committed=''; sessFinal=''; interim=''; skip = lastLen; paintSubs(); }
 function setStatus(on){
