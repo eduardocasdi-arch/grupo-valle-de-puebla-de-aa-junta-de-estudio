@@ -41,9 +41,17 @@ button,select{font:inherit;color:inherit}
 .subs{flex:1 1 0;min-height:max(30%,150px);background:var(--surface);border:1.5px solid var(--line);border-radius:14px;
   padding:clamp(12px,2vw,28px);display:flex;flex-direction:column;gap:10px;overflow:hidden;position:relative}
 .subs .lbl{display:flex;align-items:center;gap:8px;font-size:.75rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.lbl .sp{flex:1}
-.lbl button{background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:.25rem .7rem;font-size:.68rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
-body.clean .lbl button{display:none}
+.bar,.chips,.count,.lbl{display:none!important}
+[hidden]{display:none!important}
+.top{flex-wrap:nowrap;position:relative}
+.sel{flex:1 1 auto}
+.more{font-size:1.4rem;line-height:1;padding:.45rem .9rem}
+#menu{position:absolute;top:calc(100% + 6px);right:0;z-index:5;min-width:210px;display:flex;flex-direction:column;gap:6px;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:8px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+#menu button{background:none;border:none;color:var(--fg);text-align:left;font-weight:700;font-size:1rem;padding:.7rem .8rem;border-radius:10px;cursor:pointer}
+#menu button:hover,#menu button:focus-visible{background:var(--bg)}
+#menu .ver{color:var(--muted);font-size:.8rem;padding:.3rem .8rem}
+.subs.on{border-color:var(--live)}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--line)}
 .on .dot{background:var(--live);box-shadow:0 0 0 0 var(--live);animation:pulse 1.4s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
@@ -70,11 +78,16 @@ body.clean #peek{display:block}
 </style><style>body{margin:0}</style>
 
 <div id="app">
-  <div class="brand">Grupo Valle de Puebla de AA · Junta de Estudio · v7</div>
   <div class="top">
     <select id="sec" class="sel" aria-label="Paso o capítulo"></select>
     <span class="count" id="count">—</span>
-    <button class="icon" id="fs" type="button" title="Pantalla limpia">Pantalla limpia</button>
+    <button class="icon more" id="more" type="button" aria-label="Más opciones" aria-expanded="false">⋯</button>
+    <div id="menu" role="menu" hidden>
+      <button type="button" id="clr">Borrar lectura</button>
+      <button type="button" id="clrall">Borrar todo</button>
+      <button type="button" id="fs">Pantalla limpia</button>
+      <span class="ver" id="ver">Versión V8</span>
+    </div>
   </div>
   <div class="bar"><i id="fill"></i></div>
   <div class="stage">
@@ -83,7 +96,7 @@ body.clean #peek{display:block}
       <p id="question">—</p>
     </div>
     <div class="subs" id="subs">
-      <div class="lbl"><span class="dot"></span><span id="status">Micrófono apagado</span><span class="sp"></span><button id="clr" type="button">Borrar lectura</button><button id="clrall" type="button">Borrar todo</button></div>
+      <div class="lbl"><span class="dot"></span><span id="status">Micrófono apagado</span></div>
       <div class="txt"><p id="subtxt"><span class="ph">Toca «Micrófono» y lee el párrafo. Lo que digas aparecerá aquí.</span></p></div>
       <div class="msg" id="msg" role="status"></div>
     </div>
@@ -197,7 +210,7 @@ $('clrall').addEventListener('click', ()=>{
   const b = $('clrall');
   if(!armed){ b.textContent = '¿Seguro? Toca otra vez'; armed = setTimeout(()=>{ armed=null; b.textContent='Borrar todo'; }, 4000); return; }
   clearTimeout(armed); armed = null; b.textContent = 'Borrar todo';
-  reads = {}; saveReads(); resetSession(); paintSubs();
+  reads = {}; saveReads(); resetSession(); paintSubs(); setMenu(false);
 });
 function setStatus(on){
   $('subs').classList.toggle('on', on);
@@ -257,6 +270,14 @@ function toggleMic(){
   paintSubs();
 }
 $('mic').addEventListener('click', toggleMic);
+
+/* ---------- menu ⋯ ---------- */
+const menu = $('menu'), more = $('more');
+function setMenu(open){ menu.hidden = !open; more.setAttribute('aria-expanded', open?'true':'false'); }
+more.addEventListener('click', e=>{ e.stopPropagation(); setMenu(menu.hidden); });
+document.addEventListener('click', e=>{ if(!menu.hidden && !menu.contains(e.target) && e.target!==more) setMenu(false); });
+$('clr').addEventListener('click', ()=> setMenu(false));
+$('fs').addEventListener('click', ()=> setMenu(false));
 
 /* ---------- pantalla limpia ---------- */
 $('fs').addEventListener('click', ()=>{
