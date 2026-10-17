@@ -120,11 +120,11 @@ body.clean #peek{display:block}
 .qcount .cn b{font-family:var(--display);font-weight:600;font-size:2.3rem;color:var(--accent);line-height:1}
 .qcount .cn span{color:var(--muted);font-size:1.5rem}
 /* ---- modo solo preguntas ---- */
-body.soloq .subs,body.soloq #clr{display:none}
+body.soloq .subs{display:none}
 body.soloq .ctl{display:none}
-body.soloq .q{flex:1 1 auto;min-height:0;max-height:none;overflow:hidden;padding-bottom:62px;display:flex;flex-direction:column}
-body.soloq .q p{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;overflow-wrap:normal;font-size:44px;line-height:1.18;text-wrap:pretty;margin:0}
-body.soloq .secnav,body.soloq #zm,body.soloq #zp,body.soloq .chips{display:none}
+body.soloq .q{flex:1 1 auto;min-height:0;max-height:none;overflow-y:auto;padding-bottom:62px;display:flex;flex-direction:column}
+body.soloq .q p{display:block;margin:auto 0!important;overflow-wrap:normal;font-size:44px;line-height:1.18;text-wrap:pretty;margin:0}
+body.soloq .secnav,body.soloq .chips{display:none}
 .qrow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .secmini{display:none;background:none;border:none;color:var(--muted);font-weight:900;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:0 0 .55rem;text-align:right;min-width:0;line-height:1.25;white-space:normal}
 body.soloq .secmini{display:block}
@@ -226,7 +226,8 @@ body.clean .secnav{display:none}
 .fab:active{background:rgba(232,176,74,.22)}
 .fab:disabled{opacity:.25;cursor:not-allowed}
 .fab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.subs .txt{padding-bottom:3.4rem}
+.subs{padding-bottom:70px!important}
+.rec.inbox{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:76px;height:46px;z-index:3;padding:0!important}
 </style><style>body{margin:0}</style>
 
 <div id="app" hidden>
@@ -235,7 +236,7 @@ body.clean .secnav{display:none}
     <button class="icon homebtn micon2" id="homeBtn" type="button" aria-label="Ir al inicio"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg></button>
     <button class="icon zbtn" id="zm" type="button" aria-label="Letra más pequeña"><span class="za">A</span><span class="zs">−</span></button>
     <button class="icon zbtn big" id="zp" type="button" aria-label="Letra más grande"><span class="za">A</span><span class="zs">+</span></button>
-    <button class="icon micon" id="modeIcon" type="button" aria-label="Cambiar modo: grabar lectura o solo preguntas"></button>
+    <button class="icon micon" id="modeIcon" type="button" aria-label="Cambiar entre grabar lectura y solo preguntas"></button>
     <span class="grow"></span>
     <button class="icon tb rec" id="mic" type="button" aria-pressed="false" aria-label="Grabar lectura"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
     <button class="icon tb" id="help" type="button" aria-label="Instrucciones"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.6 2.2c-.8.5-1.2 1-1.2 1.9M12 17h.01"/></svg></button>
@@ -256,7 +257,7 @@ body.clean .secnav{display:none}
     </div>
     <div class="subs" id="subs">
       <div class="lbl"><span class="dot"></span><span id="status">Micrófono apagado</span></div>
-      <div class="txt"><p id="subtxt"><span class="ph">Toca el micrófono dorado de arriba y lee el párrafo. Lo que digas aparecerá aquí.</span></p></div>
+      <div class="txt"><p id="subtxt"><span class="ph">Toca el micrófono dorado de abajo y lee el párrafo. Lo que digas aparecerá aquí.</span></p></div>
       <div class="msg" id="msg" role="status"></div>
     </div>
     <button class="fab" id="prev" type="button" aria-label="Pregunta anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -320,10 +321,10 @@ body.clean .secnav{display:none}
     <div class="sub">Instrucciones para coordinadores</div>
     <div class="rule"></div>
     <div class="step"><div class="n">1</div><div><h2>Instálala en tu celular</h2><p>Una sola vez. Abre el link en Chrome, toca los tres puntos <b>⋮</b>, elige <b>Instalar app</b> y luego <b>Instalar</b>. Queda el ícono <b>Junta GVP</b>.</p></div></div>
-    <div class="step"><div class="n">2</div><div><h2>Úsala en la junta</h2><p>Elige la <b>guía</b>: la app te pregunta si quieres <b>grabar y mostrar la lectura</b>. Elige la <b>sección</b> y lee la <b>pregunta</b> en voz alta. Si elegiste grabar, toca el <b>micrófono dorado</b> de la barra de arriba y lee el párrafo: el texto aparece en pantalla. Usa las flechas <b>‹ ›</b> de las esquinas para cambiar de pregunta. El ícono de los <b>subtítulos</b> (cuadro con rayitas), arriba, cambia el modo cuando quieras.</p></div></div>
+    <div class="step"><div class="n">2</div><div><h2>Úsala en la junta</h2><p>Elige la <b>guía</b>: la app te pregunta si quieres <b>grabar y mostrar la lectura</b>. Elige la <b>sección</b> y lee la <b>pregunta</b> en voz alta. Si elegiste grabar, toca el <b>micrófono dorado</b> que está abajo, dentro del cuadro de lectura, y lee el párrafo: el texto aparece ahí mismo. Usa las flechas <b>‹ ›</b> de las esquinas para cambiar de pregunta. El ícono de los <b>subtítulos</b> (cuadro con rayitas) o de las <b>rayitas</b>, arriba, cambia el modo con un solo toque.</p></div></div>
     <div class="step"><div class="n">3</div><div><h2>Al terminar</h2><p>Toca el ícono del <b>bote de basura</b> y elige <b>Todas las preguntas</b>. La lectura solo se guarda en tu celular.</p></div></div>
     <div class="note">El micrófono necesita internet. Úsalo solo para leer el párrafo del libro: Chrome envía el audio a Google para convertirlo en texto. Estas instrucciones siempre están en el ícono <b>?</b> de arriba.</div>
-    <div class="note" id="ver">Versión V19</div>
+    <div class="note" id="ver">Versión V22</div>
     <button class="ok" id="welcomeOk" type="button">Entendido</button>
   </div>
 </div>
@@ -358,10 +359,12 @@ const picker = $('picker'), pList = $('pList');
 function paintSecBtn(){ $('secTema').textContent = temaOf(DATA[si].tema).name; $('secName').textContent = DATA[si].title; $('secMini').textContent = DATA[si].title; }
 function fitQ(){
   const q = document.querySelector('.q'), p = $('question');
+  if(p) p.style.overflowWrap='';
   if(!q || !document.body.classList.contains('soloq') || view!=='q' || !q.clientHeight){ if(p) p.style.fontSize=''; return; }
   let lo = 18, hi = 150;
   while(hi-lo > 1){ const mid = (lo+hi)>>1; p.style.fontSize = mid+'px'; if(q.scrollHeight <= q.clientHeight+1 && p.scrollWidth <= p.clientWidth+1) lo = mid; else hi = mid; }
-  p.style.fontSize = lo+'px';
+  let f = 1; try{ f = ZOOMS[zi] || 1; }catch(e){}
+  p.style.fontSize = (lo*f)+'px'; p.style.overflowWrap = f>1 ? 'anywhere' : '';
 }
 addEventListener('resize', fitQ);
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitQ);
@@ -510,7 +513,7 @@ function paintSubs(){
   
   if(!fin && !interim.trim()){
     const ph = document.createElement('span'); ph.className='ph';
-    ph.textContent = wantOn ? 'Escuchando… empieza a leer.' : 'Toca el micrófono dorado de arriba y lee el párrafo. Lo que digas aparecerá aquí.';
+    ph.textContent = wantOn ? 'Escuchando… empieza a leer.' : 'Toca el micrófono dorado de abajo y lee el párrafo. Lo que digas aparecerá aquí.';
     box.appendChild(ph); return;
   }
   const a = document.createElement('span'); a.textContent = fin + (fin && interim ? ' ' : '');
@@ -605,12 +608,18 @@ $('peek').addEventListener('click', ()=>{
 
 /* ---------- modo: grabar y mostrar la lectura, o solo preguntas ---------- */
 const MODE_KEY = 'gvp_mode_v1';
+function placeMic(solo){
+  const mic = $('mic');
+  if(solo){ if(mic.classList.contains('inbox')){ mic.classList.remove('inbox'); document.querySelector('.top').insertBefore(mic, $('help')); } }
+  else if(!mic.classList.contains('inbox')){ mic.classList.add('inbox'); document.querySelector('.stage').appendChild(mic); }
+}
 const SVG_MIC = '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 10h4M13 10h4M7 14h10"/></svg>';
 const SVG_LINES = '<svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>';
 function applyMode(){
   const m = LS.get(MODE_KEY);
   document.body.classList.toggle('soloq', m==='preguntas');
   $('modeIcon').innerHTML = m==='preguntas' ? SVG_LINES : SVG_MIC;
+  placeMic(m==='preguntas');
   fitQ();
   if(m==='preguntas' && wantOn) toggleMic();
 }
@@ -619,12 +628,12 @@ function showMode(on, cancelable, cb){ afterMode = on ? (cb || null) : null; $('
 document.querySelectorAll('#modeAsk .opt').forEach(b=> b.addEventListener('click', ()=>{ LS.set(MODE_KEY, b.dataset.m); applyMode(); const f = afterMode; showMode(false); if(f) f(); }));
 $('modeBack').addEventListener('click', ()=> showMode(false));
 $('modeHome').addEventListener('click', ()=>{ showMode(false); if(view!=='home') nav('home'); });
-$('modeIcon').addEventListener('click', ()=>{ setMenu(false); showMode(true,true); });
+$('modeIcon').addEventListener('click', ()=>{ LS.set(MODE_KEY, LS.get(MODE_KEY)==='preguntas' ? 'lectura' : 'preguntas'); applyMode(); });
 
 /* ---------- tamano de letra ---------- */
 const ZOOMS = [0.85,1,1.2,1.45,1.75];
 let zi = parseInt(LS.get('gvp_zoom_v1'),10); if(!(zi>=0 && zi<ZOOMS.length)) zi = 1;
-function applyZoom(){ document.documentElement.style.setProperty('--zoom', String(ZOOMS[zi])); LS.set('gvp_zoom_v1', String(zi)); }
+function applyZoom(){ document.documentElement.style.setProperty('--zoom', String(ZOOMS[zi])); LS.set('gvp_zoom_v1', String(zi)); fitQ(); }
 $('zm').addEventListener('click', ()=>{ if(zi>0){ zi--; applyZoom(); } });
 $('zp').addEventListener('click', ()=>{ if(zi<ZOOMS.length-1){ zi++; applyZoom(); } });
 
