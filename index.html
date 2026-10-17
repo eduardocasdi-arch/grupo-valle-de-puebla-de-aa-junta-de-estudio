@@ -33,7 +33,7 @@ button,select{font:inherit;color:inherit}
 .stage{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:clamp(10px,2vh,24px)}
 .q{flex:0 1 auto;overflow:auto;max-height:55%}
 .q p{margin:0;font-family:var(--display);font-weight:600;line-height:1.28;text-wrap:balance;
-  font-size:clamp(1.35rem,calc(.9rem + 2.3vw),3.1rem)}
+  font-size:calc(clamp(1.35rem,calc(.9rem + 2.3vw),3.1rem) * var(--zoom,1))}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.7rem}
 .chip{font-size:.8rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);
   border:1.5px solid var(--accent);border-radius:999px;padding:.2rem .7rem}
@@ -50,19 +50,19 @@ button,select{font:inherit;color:inherit}
   background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:8px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
 #menu button{background:none;border:none;color:var(--fg);text-align:left;font-weight:700;font-size:1rem;padding:.7rem .8rem;border-radius:10px;cursor:pointer}
 #menu button:hover,#menu button:focus-visible{background:var(--bg)}
-#menu .ver{color:var(--muted);font-size:.8rem;padding:.3rem .8rem}
+#menu .ver{color:var(--muted);font-size:.95rem;padding:.3rem .8rem}
 .subs.on{border-color:var(--live)}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--line)}
 .on .dot{background:var(--live);box-shadow:0 0 0 0 var(--live);animation:pulse 1.4s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
 @media (prefers-reduced-motion:reduce){.on .dot{animation:none}.bar i{transition:none}}
 .txt{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
-.txt p{margin:auto 0 0;font-size:clamp(1.25rem,calc(.8rem + 1.9vw),2.7rem);line-height:1.35;font-weight:400;overflow-wrap:anywhere}
+.txt p{margin:auto 0 0;font-size:calc(clamp(1.25rem,calc(.8rem + 1.9vw),2.7rem) * var(--zoom,1));line-height:1.35;font-weight:400;overflow-wrap:anywhere}
 .txt .int{color:var(--muted)}
-.txt .ph{color:var(--muted);font-size:clamp(1rem,calc(.7rem + 1vw),1.5rem)}
+.txt .ph{color:var(--muted);font-size:clamp(1.15rem,calc(.85rem + 1.2vw),1.7rem)}
 .brand{flex:0 0 auto;font-size:.72rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center}
 body.clean .brand{display:none}
-.msg{font-size:.9rem;color:var(--warn);min-height:1.2em}
+.msg{font-size:1.05rem;color:var(--warn);min-height:1.2em}
 
 .ctl{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:10px;flex:0 0 auto;padding-bottom:env(safe-area-inset-bottom,0px)}
 .ctl button{border:none;border-radius:14px;padding:clamp(.9rem,2.6vh,1.5rem) .6rem;font-weight:900;font-size:clamp(1rem,1.4vw+.6rem,1.6rem);cursor:pointer}
@@ -78,21 +78,21 @@ body.clean #peek{display:block}
 #welcome{position:fixed;inset:0;z-index:20;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;
   padding:max(24px,env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
 #welcome .wrap{max-width:560px;margin:0 auto}
-#welcome .grp{font-size:.78rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center;line-height:1.5}
+#welcome .grp{font-size:.92rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center;line-height:1.5}
 #welcome h1{font-family:var(--display);font-weight:700;font-size:clamp(2.2rem,9vw,3.2rem);line-height:1.05;text-align:center;margin:12px 0 8px;text-wrap:balance}
-#welcome .sub{text-align:center;color:var(--accent);font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:.8rem;margin-bottom:18px}
+#welcome .sub{text-align:center;color:var(--accent);font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:.92rem;margin-bottom:18px}
 #welcome .rule{height:2px;background:var(--accent);width:56px;margin:0 auto 20px;border-radius:2px}
 #welcome .step{display:flex;gap:14px;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
 #welcome .n{flex:0 0 34px;height:34px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-weight:900}
 #welcome h2{margin:0 0 4px;font-size:1.05rem}
-#welcome .step p{margin:0;color:var(--muted);font-size:.95rem;line-height:1.5}
+#welcome .step p{margin:0;color:var(--muted);font-size:1.1rem;line-height:1.5}
 #welcome .step b{color:var(--fg)}
-#welcome .note{color:var(--muted);font-size:.85rem;text-align:center;margin:14px 6px 18px;line-height:1.45}
+#welcome .note{color:var(--muted);font-size:1.02rem;text-align:center;margin:14px 6px 18px;line-height:1.45}
 #welcome .ok{width:100%;border:none;border-radius:14px;padding:1.05rem;font-weight:900;font-size:1.15rem;background:var(--accent);color:var(--accent-ink);cursor:pointer}
 .secbtn{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;cursor:pointer;line-height:1.2;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239fb0c1' stroke-width='2.4'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right .7rem center;background-size:1.1rem}
-.secbtn .st{font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.secbtn .st{font-size:.8rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 .secbtn .sn{font-size:1rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 #picker{position:fixed;inset:0;z-index:15;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;
   padding:max(14px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(18px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
@@ -107,28 +107,93 @@ body.clean #peek{display:block}
 #picker .tema b{display:block;font-family:var(--display);font-size:1.3rem;font-weight:600;line-height:1.2}
 #picker .tema small{display:block;color:var(--muted);font-size:.9rem;margin-top:3px}
 #picker .tema .num{color:var(--accent);font-weight:900;font-variant-numeric:tabular-nums}
-#picker .sec{width:100%;text-align:left;background:none;border:1.5px solid transparent;border-radius:12px;padding:1rem .9rem;font-size:1.1rem;color:var(--fg);cursor:pointer}
+#picker .sec{width:100%;text-align:left;background:none;border:1.5px solid transparent;border-radius:12px;padding:1.05rem .9rem;font-size:1.25rem;color:var(--fg);cursor:pointer}
 #picker .sec:active{background:var(--surface)}
 #picker .sec.on{background:rgba(232,176,74,.13);border-color:var(--accent);color:var(--accent);font-weight:700}
+
+/* ---- contador ---- */
+.qcount{display:flex;align-items:baseline;gap:10px;background:none;border:none;padding:0 0 .55rem;cursor:pointer;color:inherit;text-align:left}
+.qcount .k{font-size:.95rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.qcount .cn b{font-family:var(--display);font-weight:600;font-size:2.3rem;color:var(--accent);line-height:1}
+.qcount .cn span{color:var(--muted);font-size:1.5rem}
+/* ---- modo solo preguntas ---- */
+body.soloq .subs,body.soloq .mic,body.soloq #clr,body.soloq #clrall{display:none}
+body.soloq .ctl{grid-template-columns:1fr 1fr}
+body.soloq .q{flex:1 1 auto;max-height:none}
+body.soloq .q p{font-size:calc(clamp(1.9rem,calc(1.2rem + 4.2vw),4.2rem) * var(--zoom,1))}
+/* ---- menu: tamano de letra ---- */
+.zrow{display:flex;align-items:center;gap:6px;padding:.3rem .8rem;font-weight:700}
+.zrow span{flex:1}
+#menu .zrow button{padding:.5rem .8rem;border:1.5px solid var(--line);background:var(--bg);min-width:3.2rem;text-align:center}
+/* ---- pantalla principal ---- */
+#home{position:fixed;inset:0;z-index:14;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:max(28px,env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) max(22px,env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
+#home .hw{max-width:640px;min-height:100%;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+#home .grp{font-size:.95rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+#home h1{font-family:var(--display);font-weight:700;font-size:clamp(2.3rem,10vw,3.4rem);line-height:1.05;margin:0}
+#home .rule{height:2px;width:56px;background:var(--accent);border-radius:2px}
+#home .cont{width:100%;text-align:left;border:none;border-radius:16px;background:var(--accent);color:var(--accent-ink);padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:3px;margin-top:6px}
+#home .cont .k{font-size:.85rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;opacity:.75}
+#home .cont b{font-family:var(--display);font-size:1.45rem;font-weight:700}
+#home .cont span{font-size:1.08rem;font-weight:700}
+#home .kick{font-size:.95rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-top:6px}
+#home .list{flex:1;display:flex;flex-direction:column;border-top:1.5px solid var(--accent)}
+#home .row{flex:1;min-height:104px;display:flex;align-items:center;gap:16px;width:100%;background:none;border:none;border-bottom:1px solid var(--line);color:var(--fg);text-align:left;cursor:pointer;padding:14px 2px}
+#home .row:active{background:var(--surface)}
+#home .row .r{flex:0 0 44px;text-align:center;font-family:var(--display);font-weight:600;font-size:2.7rem;color:var(--accent);line-height:1}
+#home .row b{display:block;font-family:var(--display);font-size:1.38rem;font-weight:600;line-height:1.2}
+#home .row small{display:block;color:var(--muted);font-size:1.08rem;margin-top:5px;line-height:1.3}
+#home .row .ch{margin-left:auto;color:var(--muted);font-size:2rem;line-height:1}
+#home .foot{text-align:center;color:var(--muted);font-size:1.08rem;padding-top:6px}
+/* ---- pregunta de modo ---- */
+#modeAsk{position:fixed;inset:0;z-index:25;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:max(30px,env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) max(22px,env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
+#modeAsk .mw{max-width:560px;min-height:100%;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+#modeAsk .grp{font-size:.95rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+#modeAsk h1{font-family:var(--display);font-weight:700;font-size:clamp(2.1rem,9vw,3rem);line-height:1.05;margin:0}
+#modeAsk .rule{height:2px;width:56px;background:var(--accent);border-radius:2px;margin:6px 0}
+#modeAsk .sp{flex:1}
+#modeAsk .qq{font-family:var(--display);font-weight:600;font-size:clamp(1.7rem,7vw,2.3rem);line-height:1.2;text-wrap:balance}
+#modeAsk .opts{display:flex;gap:18px;width:100%;justify-content:center;margin-top:22px}
+#modeAsk .opt{flex:1;display:flex;flex-direction:column;align-items:center;gap:12px;background:none;border:none;color:var(--fg);cursor:pointer;padding:0}
+#modeAsk .circ{width:min(36vw,150px);aspect-ratio:1;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent);display:grid;place-items:center}
+#modeAsk .circ svg{width:48%;height:48%;stroke:var(--accent);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#modeAsk .opt:active .circ{background:rgba(232,176,74,.2)}
+#modeAsk .nm{font-family:var(--display);font-weight:600;font-size:1.8rem}
+#modeAsk .sb{color:var(--muted);font-size:1.1rem;line-height:1.3}
+#modeAsk .ft{color:var(--muted);font-size:1.05rem}
+#modeAsk .cancel{background:none;border:1.5px solid var(--line);border-radius:12px;color:var(--muted);font-weight:700;font-size:1.05rem;padding:.7rem 1.4rem;cursor:pointer;margin-top:6px}
+/* ---- ir a pregunta ---- */
+#jump{position:fixed;inset:0;z-index:22;background:rgba(0,0,0,.65);display:grid;place-items:center;padding:20px}
+#jump .box{background:var(--surface);border:1.5px solid var(--accent);border-radius:18px;padding:20px;width:min(100%,360px);display:flex;flex-direction:column;gap:14px}
+#jump h2{margin:0;font-family:var(--display);font-size:1.4rem;font-weight:600}
+#jump input{font:inherit;font-size:1.7rem;font-weight:700;text-align:center;background:var(--bg);color:var(--fg);border:1.5px solid var(--line);border-radius:12px;padding:.7rem;width:100%}
+#jump .btns{display:flex;gap:10px}
+#jump .btns button{flex:1;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);font-weight:900;font-size:1.1rem;padding:.9rem;cursor:pointer}
+#jump .btns .go{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+#jump .hint{color:var(--muted);font-size:1.02rem;margin:0}
 </style><style>body{margin:0}</style>
 
-<div id="app">
+<div id="app" hidden>
   <div class="top">
     <select id="sec" hidden aria-hidden="true" tabindex="-1"></select>
     <button id="secBtn" class="sel secbtn" type="button" aria-haspopup="dialog" aria-label="Cambiar de tema o sección"><span class="st" id="secTema"></span><span class="sn" id="secName"></span></button>
-    <span class="count" id="count">—</span>
     <button class="icon more" id="more" type="button" aria-label="Más opciones" aria-expanded="false">⋯</button>
     <div id="menu" role="menu" hidden>
       <button type="button" id="help">Instrucciones</button>
+      <button type="button" id="goHome">Elegir guía</button>
+      <button type="button" id="modeBtn">Modo</button>
+      <div class="zrow"><span>Tamaño de letra</span><button type="button" id="zm" aria-label="Letra más pequeña">A−</button><button type="button" id="zp" aria-label="Letra más grande">A+</button></div>
       <button type="button" id="clr">Borrar lectura</button>
       <button type="button" id="clrall">Borrar todo</button>
       <button type="button" id="fs">Pantalla limpia</button>
-      <span class="ver" id="ver">Versión V10</span>
+      <span class="ver" id="ver">Versión V11</span>
     </div>
   </div>
   <div class="bar"><i id="fill"></i></div>
   <div class="stage">
     <div class="q">
+      <button class="qcount" id="qcount" type="button" aria-label="Ir a otra pregunta"><span class="k">Pregunta</span><span class="cn"><b id="cnN">1</b><span id="cnT"> / 1</span></span></button>
       <div class="chips" id="chips"></div>
       <p id="question">—</p>
     </div>
@@ -144,9 +209,44 @@ body.clean #peek{display:block}
     <button class="nav" id="next" type="button">Siguiente →</button>
   </div>
 </div>
-<div id="picker" role="dialog" aria-modal="true" aria-label="Elegir tema y sección" hidden>
+<div id="home" role="main">
+  <div class="hw">
+    <div class="grp">Grupo Valle de Puebla de AA</div>
+    <h1>Junta de Estudio</h1>
+    <div class="rule"></div>
+    <button class="cont" id="hCont" type="button" hidden><span class="k">Continuar donde te quedaste</span><b id="hcA"></b><span id="hcB"></span></button>
+    <div class="kick">Guías de estudio</div>
+    <div class="list" id="hList"></div>
+    <div class="foot">Plan Nacional de Literatura</div>
+  </div>
+</div>
+<div id="modeAsk" role="dialog" aria-modal="true" aria-label="Modo de la junta" hidden>
+  <div class="mw">
+    <div class="grp">Grupo Valle de Puebla de AA</div>
+    <h1>Junta de Estudio</h1>
+    <div class="rule"></div>
+    <div class="sp"></div>
+    <div class="qq">¿Deseas grabar y mostrar la lectura?</div>
+    <div class="opts">
+      <button type="button" class="opt" data-m="lectura"><span class="circ"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><span class="nm">Sí</span><span class="sb">Con micrófono y texto</span></button>
+      <button type="button" class="opt" data-m="preguntas"><span class="circ"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 11h16M4 16h10"/></svg></span><span class="nm">No</span><span class="sb">Solo las preguntas</span></button>
+    </div>
+    <button type="button" class="cancel" id="modeCancel" hidden>Cancelar</button>
+    <div class="sp"></div>
+    <div class="ft">Puedes cambiarlo en ⋯ → Modo</div>
+  </div>
+</div>
+<div id="jump" role="dialog" aria-modal="true" aria-label="Ir a una pregunta" hidden>
+  <div class="box">
+    <h2>Ir a la pregunta</h2>
+    <input id="jumpN" type="number" inputmode="numeric" min="1" aria-label="Número de pregunta">
+    <p class="hint" id="jumpHint"></p>
+    <div class="btns"><button type="button" id="jumpNo">Cancelar</button><button type="button" class="go" id="jumpGo">Ir</button></div>
+  </div>
+</div>
+<div id="picker" role="dialog" aria-modal="true" aria-label="Secciones de la guía" hidden>
   <div class="pwrap">
-    <div class="phead"><button type="button" class="pback" id="pBack" hidden>‹ Temas</button><h2 id="pTitle">Elige el tema</h2><button type="button" class="px" id="pClose" aria-label="Cerrar">✕</button></div>
+    <div class="phead"><button type="button" class="pback" id="pBack">‹ Guías</button><h2 id="pTitle">Secciones</h2><span style="min-width:5.5rem"></span></div>
     <div class="plist" id="pList"></div>
   </div>
 </div>
@@ -157,9 +257,9 @@ body.clean #peek{display:block}
     <div class="sub">Instrucciones para coordinadores</div>
     <div class="rule"></div>
     <div class="step"><div class="n">1</div><div><h2>Instálala en tu celular</h2><p>Una sola vez. Abre el link en Chrome, toca los tres puntos <b>⋮</b>, elige <b>Instalar app</b> y luego <b>Instalar</b>. Queda el ícono <b>Junta GVP</b>.</p></div></div>
-    <div class="step"><div class="n">2</div><div><h2>Úsala en la junta</h2><p>Elige el <b>tema</b> arriba. Lee la <b>pregunta</b> en voz alta. Toca <b>Micrófono</b> y lee el párrafo: el texto aparece abajo. Usa <b>Anterior</b> y <b>Siguiente</b> para cambiar de pregunta.</p></div></div>
+    <div class="step"><div class="n">2</div><div><h2>Úsala en la junta</h2><p>Elige la <b>guía</b> y la <b>sección</b>. Lee la <b>pregunta</b> en voz alta. Si elegiste grabar, toca <b>Micrófono</b> y lee el párrafo: el texto aparece abajo. Usa <b>Anterior</b> y <b>Siguiente</b> para cambiar de pregunta.</p></div></div>
     <div class="step"><div class="n">3</div><div><h2>Al terminar</h2><p>Toca <b>⋯</b> y elige <b>Borrar todo</b>. La lectura solo se guarda en tu celular.</p></div></div>
-    <div class="note">El micrófono necesita internet. Estas instrucciones siempre están en el menú ⋯.</div>
+    <div class="note">El micrófono necesita internet. Úsalo solo para leer el párrafo del libro: Chrome envía el audio a Google para convertirlo en texto. Estas instrucciones siempre están en el menú ⋯.</div>
     <button class="ok" id="welcomeOk" type="button">Entendido</button>
   </div>
 </div>
@@ -192,34 +292,58 @@ const TEMAS = [
 const temaOf = k => TEMAS.find(x=>x.k===k) || {name:k, sub:'', short:k};
 const picker = $('picker'), pList = $('pList');
 function paintSecBtn(){ $('secTema').textContent = temaOf(DATA[si].tema).name; $('secName').textContent = DATA[si].title; }
-function pickerThemes(){
-  $('pTitle').textContent = 'Elige el tema'; $('pBack').hidden = true; pList.textContent = '';
-  TEMAS.forEach(tm=>{
-    let n = 0; DATA.forEach(s=>{ if(s.tema===tm.k) n += s.items.length; });
-    const b = document.createElement('button'); b.type='button'; b.className = 'tema' + (DATA[si].tema===tm.k ? ' on' : '');
-    const d = document.createElement('div'); const bb = document.createElement('b'); bb.textContent = tm.name;
-    const sm = document.createElement('small'); sm.textContent = tm.sub; d.appendChild(bb); d.appendChild(sm);
-    const nu = document.createElement('span'); nu.className='num'; nu.textContent = n;
-    b.appendChild(d); b.appendChild(nu); b.addEventListener('click', ()=> pickerSections(tm)); pList.appendChild(b);
-  });
-  picker.scrollTop = 0;
-}
 function pickerSections(tm){
-  $('pTitle').textContent = tm.short; $('pBack').hidden = false; pList.textContent = '';
+  $('pTitle').textContent = tm.name; pList.textContent = '';
   let cur = null;
   DATA.forEach((s,i)=>{
     if(s.tema!==tm.k) return;
     const b = document.createElement('button'); b.type='button'; b.className = 'sec' + (i===si ? ' on' : ''); b.textContent = s.title;
-    b.addEventListener('click', ()=>{ closePicker(); goSection(i); });
+    b.addEventListener('click', ()=>{ nav('q'); goSection(i); });
     pList.appendChild(b); if(i===si) cur = b;
   });
   picker.scrollTop = 0; if(cur) cur.scrollIntoView({block:'center'});
 }
-function openPicker(){ setMenu(false); pickerThemes(); picker.hidden = false; }
-function closePicker(){ picker.hidden = true; }
-$('secBtn').addEventListener('click', openPicker);
-$('pBack').addEventListener('click', pickerThemes);
-$('pClose').addEventListener('click', closePicker);
+
+/* ---------- pantallas: inicio, secciones, pregunta (con boton Atras del celular) ---------- */
+let view = 'home';
+function showView(v, t){
+  view = v;
+  $('home').hidden = v!=='home';
+  picker.hidden = v!=='secs';
+  $('app').hidden = v!=='q';
+  if(v==='home') paintHome();
+  if(v==='secs') pickerSections(TEMAS[t] || TEMAS[0]);
+  if(v!=='q' && wantOn) toggleMic();
+  if(v==='q'){ paintSecBtn(); }
+  setMenu(false); updateWake();
+}
+function nav(v, t){ try{ history.pushState({v:v,t:t},''); }catch(e){} showView(v, t); }
+addEventListener('popstate', e=>{ const s = e.state || {v:'home'}; showView(s.v, s.t); });
+const temaIdxOf = k => Math.max(0, TEMAS.findIndex(x=>x.k===k));
+
+function paintHome(){
+  const box = $('hList'); box.textContent = '';
+  TEMAS.forEach((tm,i)=>{
+    let n = 0; DATA.forEach(s=>{ if(s.tema===tm.k) n += s.items.length; });
+    const b = document.createElement('button'); b.type='button'; b.className='row';
+    const r = document.createElement('span'); r.className='r'; r.textContent = i+1;
+    const d = document.createElement('div'); const bb = document.createElement('b'); bb.textContent = tm.k;
+    const sm = document.createElement('small'); sm.textContent = tm.sub + ' · ' + n + ' preguntas'; d.appendChild(bb); d.appendChild(sm);
+    const ch = document.createElement('span'); ch.className='ch'; ch.textContent='›';
+    b.appendChild(r); b.appendChild(d); b.appendChild(ch);
+    b.addEventListener('click', ()=> nav('secs', i)); box.appendChild(b);
+  });
+  const c = $('hCont'), last = parseInt(LS.get('gvp_sec'),10);
+  if(Number.isFinite(last) && last>=0 && last<DATA.length){
+    const q = DATA[last].items[resumeIndex(last)];
+    $('hcA').textContent = temaOf(DATA[last].tema).name; $('hcB').textContent = DATA[last].title + ' · pregunta ' + q.n;
+    c.dataset.s = String(last); c.hidden = false;
+  }else c.hidden = true;
+}
+$('hCont').addEventListener('click', ()=>{ const i = parseInt($('hCont').dataset.s,10); nav('q'); goSection(i); });
+$('secBtn').addEventListener('click', ()=> nav('secs', temaIdxOf(DATA[si].tema)));
+$('pBack').addEventListener('click', ()=> history.back());
+$('goHome').addEventListener('click', ()=> nav('home'));
 
 function resumeIndex(i){
   const n = parseInt(LS.get('gvp_q_'+DATA[i].title),10);
@@ -239,12 +363,11 @@ function render(clear){
   const ref = t.match(/\((Párrafos?[^)]*)\)\s*$/);
   if(ref){ const c = document.createElement('span'); c.className='chip'; c.textContent = ref[1].trim(); chips.appendChild(c); }
   if(pend){ const c = document.createElement('span'); c.className='chip pend'; c.textContent='Pendiente de verificar contra el libro'; chips.appendChild(c); }
-  $('count').textContent = 'Pregunta ' + (qi+1) + ' de ' + s.items.length;
+  $('cnN').textContent = it.n; $('cnT').textContent = ' / ' + s.items[s.items.length-1].n;
   $('fill').style.width = ((qi+1)/s.items.length*100) + '%';
   $('prev').disabled = (si===0 && qi===0);
   $('next').disabled = (si===DATA.length-1 && qi===s.items.length-1);
-  LS.set('gvp_q_'+s.title, String(qi));
-  LS.set('gvp_sec', String(si));
+  if(view==='q'){ LS.set('gvp_q_'+s.title, String(qi)); LS.set('gvp_sec', String(si)); }
   paintSecBtn();
   if(newKey!==curKey){ flushPiece(); curKey = newKey; sessFinal=''; interim=''; skip = lastLen; }
   paintSubs(); const sc = $('subtxt').parentElement; sc.scrollTop = sc.scrollHeight;
@@ -264,7 +387,7 @@ secSel.addEventListener('change', ()=> goSection(parseInt(secSel.value,10)));
 $('prev').addEventListener('click', ()=>step(-1));
 $('next').addEventListener('click', ()=>step(1));
 addEventListener('keydown', e=>{
-  if(e.target && e.target.tagName==='SELECT') return;
+  if(view!=='q' || !$('jump').hidden || (e.target && (e.target.tagName==='SELECT'||e.target.tagName==='INPUT'))) return;
   if(e.key==='ArrowRight') step(1);
   else if(e.key==='ArrowLeft') step(-1);
   else if(e.key===' '){ e.preventDefault(); toggleMic(); }
@@ -350,17 +473,19 @@ function startRec(){
   rec.start();
 }
 let wake = null;
-async function keepAwake(on){
+async function updateWake(){
+  const want = view==='q' && !document.hidden;
   try{
-    if(on && navigator.wakeLock){ wake = await navigator.wakeLock.request('screen'); }
-    else if(wake){ await wake.release(); wake = null; }
+    if(want && !wake && navigator.wakeLock){ wake = await navigator.wakeLock.request('screen'); wake.addEventListener('release', ()=>{ wake = null; }); }
+    else if(!want && wake){ const w = wake; wake = null; await w.release(); }
   }catch(e){}
 }
+document.addEventListener('visibilitychange', updateWake);
 function toggleMic(){
   say('');
   if(!SR){ say('Este navegador no tiene reconocimiento de voz. Abre la página en Chrome para Android.'); return; }
-  if(wantOn){ wantOn = false; try{ rec.stop(); }catch(e){} setStatus(false); keepAwake(false); paintSubs(); return; }
-  wantOn = true; setStatus(true); keepAwake(true);
+  if(wantOn){ wantOn = false; try{ rec.stop(); }catch(e){} setStatus(false); paintSubs(); return; }
+  wantOn = true; setStatus(true);
   try{ startRec(); }catch(e){ wantOn=false; setStatus(false); say('No se pudo iniciar el micrófono.'); }
   paintSubs();
 }
@@ -378,8 +503,7 @@ $('fs').addEventListener('click', ()=> setMenu(false));
 const welcome = $('welcome');
 function showWelcome(on){ welcome.hidden = !on; if(on) welcome.scrollTop = 0; }
 $('help').addEventListener('click', ()=>{ setMenu(false); showWelcome(true); });
-$('welcomeOk').addEventListener('click', ()=>{ LS.set('gvp_welcome_v1','1'); showWelcome(false); });
-if(!LS.get('gvp_welcome_v1')) showWelcome(true);
+$('welcomeOk').addEventListener('click', ()=>{ LS.set('gvp_welcome_v1','1'); showWelcome(false); if(!LS.get(MODE_KEY)) showMode(true,false); });
 
 /* ---------- pantalla limpia ---------- */
 $('fs').addEventListener('click', ()=>{
@@ -391,10 +515,52 @@ $('peek').addEventListener('click', ()=>{
   try{ document.fullscreenElement && document.exitFullscreen(); }catch(e){}
 });
 
+/* ---------- modo: grabar y mostrar la lectura, o solo preguntas ---------- */
+const MODE_KEY = 'gvp_mode_v1';
+function applyMode(){
+  const m = LS.get(MODE_KEY);
+  document.body.classList.toggle('soloq', m==='preguntas');
+  if(m==='preguntas' && wantOn) toggleMic();
+}
+function showMode(on, cancelable){ $('modeAsk').hidden = !on; $('modeCancel').hidden = !cancelable; if(on) $('modeAsk').scrollTop = 0; }
+document.querySelectorAll('#modeAsk .opt').forEach(b=> b.addEventListener('click', ()=>{ LS.set(MODE_KEY, b.dataset.m); applyMode(); showMode(false); }));
+$('modeCancel').addEventListener('click', ()=> showMode(false));
+$('modeBtn').addEventListener('click', ()=>{ setMenu(false); showMode(true,true); });
+
+/* ---------- tamano de letra ---------- */
+const ZOOMS = [0.85,1,1.2,1.45,1.75];
+let zi = parseInt(LS.get('gvp_zoom_v1'),10); if(!(zi>=0 && zi<ZOOMS.length)) zi = 1;
+function applyZoom(){ document.documentElement.style.setProperty('--zoom', String(ZOOMS[zi])); LS.set('gvp_zoom_v1', String(zi)); }
+$('zm').addEventListener('click', ()=>{ if(zi>0){ zi--; applyZoom(); } });
+$('zp').addEventListener('click', ()=>{ if(zi<ZOOMS.length-1){ zi++; applyZoom(); } });
+
+/* ---------- ir a una pregunta ---------- */
+const jump = $('jump');
+$('qcount').addEventListener('click', ()=>{
+  const items = DATA[si].items;
+  $('jumpHint').textContent = 'De la ' + items[0].n + ' a la ' + items[items.length-1].n;
+  $('jumpN').value = ''; jump.hidden = false; setTimeout(()=>{ try{ $('jumpN').focus(); }catch(e){} }, 50);
+});
+function doJump(){
+  const n = parseInt($('jumpN').value,10), items = DATA[si].items;
+  if(Number.isFinite(n)){
+    let k = items.findIndex(x=>x.n===n); if(k<0) k = items.findIndex(x=>x.n>n); if(k<0) k = items.length-1;
+    qi = k; render(true);
+  }
+  jump.hidden = true;
+}
+$('jumpGo').addEventListener('click', doJump);
+$('jumpNo').addEventListener('click', ()=>{ jump.hidden = true; });
+$('jumpN').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); doJump(); } });
+
 /* ---------- inicio ---------- */
 (function(){
   const last = parseInt(LS.get('gvp_sec'),10);
   goSection(Number.isFinite(last) && last>=0 && last<DATA.length ? last : 0);
+  try{ history.replaceState({v:'home'},''); }catch(e){}
+  applyZoom(); applyMode(); showView('home');
+  if(!LS.get('gvp_welcome_v1')) showWelcome(true);
+  else if(!LS.get(MODE_KEY)) showMode(true,false);
 })();
 </script>
 
