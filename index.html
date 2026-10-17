@@ -30,7 +30,7 @@ button,select{font:inherit;color:inherit}
 .bar{height:5px;border-radius:3px;background:var(--line);overflow:hidden;flex:0 0 auto}
 .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
 
-.stage{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:clamp(10px,2vh,24px)}
+.stage{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:clamp(10px,2vh,24px)}
 .q{flex:0 1 auto;overflow:auto;max-height:55%}
 .q p{margin:0;font-family:var(--display);font-weight:600;line-height:1.28;text-wrap:balance;
   font-size:calc(clamp(1.35rem,calc(.9rem + 2.3vw),3.1rem) * var(--zoom,1))}
@@ -74,7 +74,7 @@ body.clean .brand{display:none}
 body.clean .top,body.clean .bar,body.clean .ctl,body.clean .chips{display:none}
 body.clean #peek{display:block}
 #peek{display:none;position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);right:max(10px,env(safe-area-inset-right,0px));opacity:.45}
-@media (max-width:520px){.ctl{grid-template-columns:1fr 1fr}.mic{grid-column:1/-1;order:-1}}
+
 #welcome{position:fixed;inset:0;z-index:20;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;
   padding:max(24px,env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
 #welcome .wrap{max-width:560px;margin:0 auto}
@@ -118,7 +118,8 @@ body.clean #peek{display:block}
 .qcount .cn span{color:var(--muted);font-size:1.5rem}
 /* ---- modo solo preguntas ---- */
 body.soloq .subs,body.soloq .mic,body.soloq #clr,body.soloq #clrall{display:none}
-body.soloq .ctl{grid-template-columns:1fr 1fr}
+body.soloq .ctl{display:none}
+body.soloq .q{padding-bottom:4rem}
 body.soloq .q{flex:1 1 auto;max-height:none}
 body.soloq .q p{font-size:calc(clamp(1.9rem,calc(1.2rem + 4.2vw),4.2rem) * var(--zoom,1))}
 /* ---- menu: tamano de letra ---- */
@@ -192,22 +193,35 @@ body.clean .secnav{display:none}
 #picker .sec small{display:block;color:var(--muted);font-size:1.05rem;margin-top:4px}
 #picker .sec .ch{margin-left:auto;color:var(--muted);font-size:2rem;line-height:1}
 #picker .pback{font-size:1.08rem;padding:.65rem 1rem}
+.ctl{grid-template-columns:1fr}
+.zbtn{display:flex;align-items:baseline;justify-content:center;gap:1px;padding:.55rem .75rem;min-width:2.9rem}
+.zbtn .za{font-weight:900;font-size:1rem;line-height:1}
+.zbtn.big .za{font-size:1.45rem}
+.zbtn .zs{font-size:.8rem;font-weight:900}
+.fab{position:absolute;bottom:14px;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;padding:0;cursor:pointer;z-index:3;
+  background:rgba(22,33,46,.78);border:1px solid rgba(159,176,193,.38);color:var(--fg);opacity:.6;-webkit-tap-highlight-color:transparent}
+#prev.fab{left:14px}#next.fab{right:14px}
+.fab:active{opacity:1}
+.fab:disabled{opacity:.18;cursor:not-allowed}
+.fab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.subs .txt{padding-bottom:3.4rem}
 </style><style>body{margin:0}</style>
 
 <div id="app" hidden>
   <div class="top">
     <select id="sec" hidden aria-hidden="true" tabindex="-1"></select>
     <button class="icon homebtn" id="homeBtn" type="button" aria-label="Ir al inicio">⌂ Inicio</button>
+    <button class="icon zbtn" id="zm" type="button" aria-label="Letra más pequeña"><span class="za">A</span><span class="zs">−</span></button>
+    <button class="icon zbtn big" id="zp" type="button" aria-label="Letra más grande"><span class="za">A</span><span class="zs">+</span></button>
     <span class="grow"></span>
     <button class="icon more" id="more" type="button" aria-label="Más opciones" aria-expanded="false">⋯</button>
     <div id="menu" role="menu" hidden>
       <button type="button" id="help">Instrucciones</button>
       <button type="button" id="modeBtn">Modo</button>
-      <div class="zrow"><span>Tamaño de letra</span><button type="button" id="zm" aria-label="Letra más pequeña">A−</button><button type="button" id="zp" aria-label="Letra más grande">A+</button></div>
       <button type="button" id="clr">Borrar lectura</button>
       <button type="button" id="clrall">Borrar todo</button>
       <button type="button" id="fs">Pantalla limpia</button>
-      <span class="ver" id="ver">Versión V12</span>
+      <span class="ver" id="ver">Versión V13</span>
     </div>
   </div>
   <div class="secnav">
@@ -227,11 +241,11 @@ body.clean .secnav{display:none}
       <div class="txt"><p id="subtxt"><span class="ph">Toca «Micrófono» y lee el párrafo. Lo que digas aparecerá aquí.</span></p></div>
       <div class="msg" id="msg" role="status"></div>
     </div>
+    <button class="fab" id="prev" type="button" aria-label="Pregunta anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="fab" id="next" type="button" aria-label="Pregunta siguiente"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
   <div class="ctl">
-    <button class="nav" id="prev" type="button">← Anterior</button>
     <button class="mic" id="mic" type="button" aria-pressed="false">Micrófono</button>
-    <button class="nav" id="next" type="button">Siguiente →</button>
   </div>
 </div>
 <div id="home" role="main">
@@ -283,7 +297,7 @@ body.clean .secnav{display:none}
     <div class="sub">Instrucciones para coordinadores</div>
     <div class="rule"></div>
     <div class="step"><div class="n">1</div><div><h2>Instálala en tu celular</h2><p>Una sola vez. Abre el link en Chrome, toca los tres puntos <b>⋮</b>, elige <b>Instalar app</b> y luego <b>Instalar</b>. Queda el ícono <b>Junta GVP</b>.</p></div></div>
-    <div class="step"><div class="n">2</div><div><h2>Úsala en la junta</h2><p>Elige la <b>guía</b> y la <b>sección</b>. Lee la <b>pregunta</b> en voz alta. Si elegiste grabar, toca <b>Micrófono</b> y lee el párrafo: el texto aparece abajo. Usa <b>Anterior</b> y <b>Siguiente</b> para cambiar de pregunta.</p></div></div>
+    <div class="step"><div class="n">2</div><div><h2>Úsala en la junta</h2><p>Elige la <b>guía</b>: la app te pregunta si quieres <b>grabar y mostrar la lectura</b>. Elige la <b>sección</b> y lee la <b>pregunta</b> en voz alta. Si elegiste grabar, toca <b>Micrófono</b> y lee el párrafo: el texto aparece abajo. Usa las flechas <b>‹ ›</b> de las esquinas para cambiar de pregunta.</p></div></div>
     <div class="step"><div class="n">3</div><div><h2>Al terminar</h2><p>Toca <b>⋯</b> y elige <b>Borrar todo</b>. La lectura solo se guarda en tu celular.</p></div></div>
     <div class="note">El micrófono necesita internet. Úsalo solo para leer el párrafo del libro: Chrome envía el audio a Google para convertirlo en texto. Estas instrucciones siempre están en el menú ⋯.</div>
     <button class="ok" id="welcomeOk" type="button">Entendido</button>
@@ -375,7 +389,7 @@ function paintHome(){
     const sm = document.createElement('small'); sm.textContent = tm.sub + ' · ' + n + ' preguntas'; d.appendChild(bb); d.appendChild(sm);
     const ch = document.createElement('span'); ch.className='ch'; ch.textContent='›';
     b.appendChild(r); b.appendChild(d); b.appendChild(ch);
-    b.addEventListener('click', ()=> nav('secs', i)); box.appendChild(b);
+    b.addEventListener('click', ()=> showMode(true, true, ()=> nav('secs', i))); box.appendChild(b);
   });
   const c = $('hCont'), last = parseInt(LS.get('gvp_sec'),10);
   if(Number.isFinite(last) && last>=0 && last<DATA.length){
@@ -551,7 +565,7 @@ $('fs').addEventListener('click', ()=> setMenu(false));
 const welcome = $('welcome');
 function showWelcome(on){ welcome.hidden = !on; if(on) welcome.scrollTop = 0; }
 $('help').addEventListener('click', ()=>{ setMenu(false); showWelcome(true); });
-$('welcomeOk').addEventListener('click', ()=>{ LS.set('gvp_welcome_v1','1'); showWelcome(false); if(!LS.get(MODE_KEY)) showMode(true,false); });
+$('welcomeOk').addEventListener('click', ()=>{ LS.set('gvp_welcome_v1','1'); showWelcome(false); });
 
 /* ---------- pantalla limpia ---------- */
 $('fs').addEventListener('click', ()=>{
@@ -570,8 +584,9 @@ function applyMode(){
   document.body.classList.toggle('soloq', m==='preguntas');
   if(m==='preguntas' && wantOn) toggleMic();
 }
-function showMode(on, cancelable){ $('modeAsk').hidden = !on; $('modeCancel').hidden = !cancelable; if(on) $('modeAsk').scrollTop = 0; }
-document.querySelectorAll('#modeAsk .opt').forEach(b=> b.addEventListener('click', ()=>{ LS.set(MODE_KEY, b.dataset.m); applyMode(); showMode(false); }));
+let afterMode = null;
+function showMode(on, cancelable, cb){ afterMode = on ? (cb || null) : null; $('modeAsk').hidden = !on; $('modeCancel').hidden = !cancelable; if(on) $('modeAsk').scrollTop = 0; }
+document.querySelectorAll('#modeAsk .opt').forEach(b=> b.addEventListener('click', ()=>{ LS.set(MODE_KEY, b.dataset.m); applyMode(); const f = afterMode; showMode(false); if(f) f(); }));
 $('modeCancel').addEventListener('click', ()=> showMode(false));
 $('modeBtn').addEventListener('click', ()=>{ setMenu(false); showMode(true,true); });
 
@@ -608,7 +623,6 @@ $('jumpN').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefaul
   try{ history.replaceState({v:'home'},''); }catch(e){}
   applyZoom(); applyMode(); showView('home');
   if(!LS.get('gvp_welcome_v1')) showWelcome(true);
-  else if(!LS.get(MODE_KEY)) showMode(true,false);
 })();
 </script>
 
