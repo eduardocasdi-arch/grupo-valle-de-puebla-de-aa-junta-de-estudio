@@ -172,23 +172,48 @@ body.soloq .q p{font-size:calc(clamp(1.9rem,calc(1.2rem + 4.2vw),4.2rem) * var(-
 #jump .btns button{flex:1;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);font-weight:900;font-size:1.1rem;padding:.9rem;cursor:pointer}
 #jump .btns .go{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 #jump .hint{color:var(--muted);font-size:1.02rem;margin:0}
+.grow{flex:1}
+.homebtn{font-size:1.08rem;padding:.65rem 1rem}
+.secnav{display:flex;gap:8px;align-items:stretch}
+.secnav .arr{font-size:2rem;line-height:1;padding:0 1rem}
+.secnav .arr:disabled{opacity:.3;cursor:not-allowed}
+.secnav .secbtn{flex:1 1 auto;align-items:center;text-align:center;padding:.5rem 2.2rem .5rem 1rem}
+.secnav .secbtn .sn{font-size:1.1rem}
+.secnav .secbtn .st{font-size:.82rem}
+body.clean .secnav{display:none}
+/* lista de secciones */
+#picker .kk{font-size:.95rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+#picker .plist{gap:0;border-top:1.5px solid var(--accent)}
+#picker .sec{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:none;border:none;border-bottom:1px solid var(--line);border-radius:0;padding:14px 2px;color:var(--fg);cursor:pointer;font-size:inherit}
+#picker .sec:active{background:var(--surface)}
+#picker .sec .r{flex:0 0 3.4rem;text-align:center;font-family:var(--display);font-weight:600;font-size:2.1rem;color:var(--accent);line-height:1}
+#picker .sec .r.long{font-size:1.5rem}
+#picker .sec b{display:block;font-family:var(--display);font-size:1.3rem;font-weight:600;line-height:1.2}
+#picker .sec small{display:block;color:var(--muted);font-size:1.05rem;margin-top:4px}
+#picker .sec .ch{margin-left:auto;color:var(--muted);font-size:2rem;line-height:1}
+#picker .pback{font-size:1.08rem;padding:.65rem 1rem}
 </style><style>body{margin:0}</style>
 
 <div id="app" hidden>
   <div class="top">
     <select id="sec" hidden aria-hidden="true" tabindex="-1"></select>
-    <button id="secBtn" class="sel secbtn" type="button" aria-haspopup="dialog" aria-label="Cambiar de tema o sección"><span class="st" id="secTema"></span><span class="sn" id="secName"></span></button>
+    <button class="icon homebtn" id="homeBtn" type="button" aria-label="Ir al inicio">⌂ Inicio</button>
+    <span class="grow"></span>
     <button class="icon more" id="more" type="button" aria-label="Más opciones" aria-expanded="false">⋯</button>
     <div id="menu" role="menu" hidden>
       <button type="button" id="help">Instrucciones</button>
-      <button type="button" id="goHome">Elegir guía</button>
       <button type="button" id="modeBtn">Modo</button>
       <div class="zrow"><span>Tamaño de letra</span><button type="button" id="zm" aria-label="Letra más pequeña">A−</button><button type="button" id="zp" aria-label="Letra más grande">A+</button></div>
       <button type="button" id="clr">Borrar lectura</button>
       <button type="button" id="clrall">Borrar todo</button>
       <button type="button" id="fs">Pantalla limpia</button>
-      <span class="ver" id="ver">Versión V11</span>
+      <span class="ver" id="ver">Versión V12</span>
     </div>
+  </div>
+  <div class="secnav">
+    <button class="icon arr" id="secPrev" type="button" aria-label="Sección anterior">‹</button>
+    <button id="secBtn" class="sel secbtn" type="button" aria-haspopup="dialog" aria-label="Ver todas las secciones"><span class="st" id="secTema"></span><span class="sn" id="secName"></span></button>
+    <button class="icon arr" id="secNext" type="button" aria-label="Sección siguiente">›</button>
   </div>
   <div class="bar"><i id="fill"></i></div>
   <div class="stage">
@@ -246,7 +271,8 @@ body.soloq .q p{font-size:calc(clamp(1.9rem,calc(1.2rem + 4.2vw),4.2rem) * var(-
 </div>
 <div id="picker" role="dialog" aria-modal="true" aria-label="Secciones de la guía" hidden>
   <div class="pwrap">
-    <div class="phead"><button type="button" class="pback" id="pBack">‹ Guías</button><h2 id="pTitle">Secciones</h2><span style="min-width:5.5rem"></span></div>
+    <div class="phead"><button type="button" class="pback" id="pBack">⌂ Inicio</button><h2 id="pTitle">Secciones</h2><span style="min-width:6.2rem"></span></div>
+    <div class="kk" id="pKick"></div>
     <div class="plist" id="pList"></div>
   </div>
 </div>
@@ -292,16 +318,34 @@ const TEMAS = [
 const temaOf = k => TEMAS.find(x=>x.k===k) || {name:k, sub:'', short:k};
 const picker = $('picker'), pList = $('pList');
 function paintSecBtn(){ $('secTema').textContent = temaOf(DATA[si].tema).name; $('secName').textContent = DATA[si].title; }
+const ROM_RE = /^Concepto\s+([IVX]+)$/, CAP_RE = /^Cap[ií]tulo\s+(\d+)\./;
+function badgeOf(title, k){
+  let m = title.match(CAP_RE); if(m) return m[1];
+  m = title.match(ROM_RE); if(m) return m[1];
+  if(/(Paso|Tradición)$/.test(title)) return String(k+1);
+  return '•';
+}
 function pickerSections(tm){
-  $('pTitle').textContent = tm.name; pList.textContent = '';
-  let cur = null;
+  $('pTitle').textContent = tm.short; pList.textContent = '';
+  let k = 0;
+  DATA.forEach((s,i)=>{ if(s.tema===tm.k) k++; });
+  $('pKick').textContent = 'Elige la sección · ' + k;
+  k = 0;
   DATA.forEach((s,i)=>{
     if(s.tema!==tm.k) return;
-    const b = document.createElement('button'); b.type='button'; b.className = 'sec' + (i===si ? ' on' : ''); b.textContent = s.title;
+    const b = document.createElement('button'); b.type='button'; b.className = 'sec';
+    const r = document.createElement('span'); const bd = badgeOf(s.title, k); r.className = 'r' + (bd.length>2 ? ' long' : ''); r.textContent = bd;
+    const d = document.createElement('div'); const bb = document.createElement('b'); bb.textContent = s.title;
+    const sm = document.createElement('small'); let txt = s.items.length + ' preguntas';
+    const saved = LS.get('gvp_q_'+s.title);
+    if(saved !== null){ const q = parseInt(saved,10); if(Number.isFinite(q) && q>0 && q<s.items.length) txt += ' · va en la ' + s.items[q].n; }
+    sm.textContent = txt; d.appendChild(bb); d.appendChild(sm);
+    const ch = document.createElement('span'); ch.className='ch'; ch.textContent='›';
+    b.appendChild(r); b.appendChild(d); b.appendChild(ch);
     b.addEventListener('click', ()=>{ nav('q'); goSection(i); });
-    pList.appendChild(b); if(i===si) cur = b;
+    pList.appendChild(b); k++;
   });
-  picker.scrollTop = 0; if(cur) cur.scrollIntoView({block:'center'});
+  picker.scrollTop = 0;
 }
 
 /* ---------- pantallas: inicio, secciones, pregunta (con boton Atras del celular) ---------- */
@@ -342,8 +386,11 @@ function paintHome(){
 }
 $('hCont').addEventListener('click', ()=>{ const i = parseInt($('hCont').dataset.s,10); nav('q'); goSection(i); });
 $('secBtn').addEventListener('click', ()=> nav('secs', temaIdxOf(DATA[si].tema)));
-$('pBack').addEventListener('click', ()=> history.back());
-$('goHome').addEventListener('click', ()=> nav('home'));
+$('pBack').addEventListener('click', ()=> nav('home'));
+$('homeBtn').addEventListener('click', ()=> nav('home'));
+function stepSection(d){ const j = si + d; if(j<0 || j>=DATA.length) return; goSection(j); }
+$('secPrev').addEventListener('click', ()=> stepSection(-1));
+$('secNext').addEventListener('click', ()=> stepSection(1));
 
 function resumeIndex(i){
   const n = parseInt(LS.get('gvp_q_'+DATA[i].title),10);
@@ -365,6 +412,7 @@ function render(clear){
   if(pend){ const c = document.createElement('span'); c.className='chip pend'; c.textContent='Pendiente de verificar contra el libro'; chips.appendChild(c); }
   $('cnN').textContent = it.n; $('cnT').textContent = ' / ' + s.items[s.items.length-1].n;
   $('fill').style.width = ((qi+1)/s.items.length*100) + '%';
+  $('secPrev').disabled = (si===0); $('secNext').disabled = (si===DATA.length-1);
   $('prev').disabled = (si===0 && qi===0);
   $('next').disabled = (si===DATA.length-1 && qi===s.items.length-1);
   if(view==='q'){ LS.set('gvp_q_'+s.title, String(qi)); LS.set('gvp_sec', String(si)); }
